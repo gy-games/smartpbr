@@ -6,7 +6,7 @@ echo "├───────────────────────�
 echo "│SMARTPBR IS A SHELL SCRIPT THAT HELP OPS SETUP POLICY BASED ROUTING S-│"
 echo "│RVICE EASIER                                                          │"
 echo "│                                                                      │"
-echo "│                         VERSION : 0.0.2                              │"
+echo "│                         VERSION : 0.0.3                              │"
 echo "│                                                                      │"
 echo "│   !NOTICE:IF THIS IS YOUR FIRST TIME USE THIS SCRIPT,INIT IT FIRST   │"
 echo "│                                                                      │"
@@ -35,7 +35,7 @@ initpbr(){
       PBRNUM=$((`cat /etc/iproute2/rt_tables | grep -B 1 unspec | head -n 1 |awk {'print $1'}`-1))
     fi
     if [ $UPDATE == "NEW" ];then
-      sed -i "/unspec/i$PBRNUM    $line" /etc/iproute2/rt_tables
+      sed -i "/unspec/i$PBRNUM    $PBRNAME" /etc/iproute2/rt_tables
     fi
     ip route flush table $PBRNAME
     cat $WORKDIR/config/route.config | while read line

@@ -6,7 +6,7 @@ echo "├───────────────────────�
 echo "│SMARTPBR IS A SHELL SCRIPT THAT HELP OPS SETUP POLICY BASED ROUTING S-│"
 echo "│RVICE EASIER                                                          │"
 echo "│                                                                      │"
-echo "│                         VERSION : 0.0.1                              │"
+echo "│                         VERSION : 0.0.2                              │"
 echo "│                                                                      │"
 echo "│   !NOTICE:IF THIS IS YOUR FIRST TIME USE THIS SCRIPT,INIT IT FIRST   │"
 echo "│                                                                      │"
@@ -55,22 +55,19 @@ initpbr(){
 
 changeline(){
   echo "CHANGING LINE.."
-  #/etc/init.d/iptables save
   iptables-save > /etc/sysconfig/iptables
   ip rule show | grep -v -E -w "local|main|default" | awk '{print $3" table "$5" "$6}' | while read line
   do
-    #echo ip rule del from $line
     ip rule del from $line
-    PREDELLINE=`cat /etc/sysconfig/iptables | grep -nE "\`echo $line | awk '{print $1 " -j SNAT --to-source"'}\`" | awk -F ':' '{print $1}'`
-    #echo "DELETE IPTABLES LINE $PREDELLINE"
-    sed -i "$PREDELLINE,$PREDELLINE d" /etc/sysconfig/iptables
+    cat /etc/sysconfig/iptables |  grep -nE "`echo $line | awk '{print $1 " -j SNAT --to-source"'}`" | awk -F ':' '{print $1}' | while read PREDELLINE
+    do
+      sed -i "$PREDELLINE,$PREDELLINE d" /etc/sysconfig/iptables
+    done
   done
   cat $WORKDIR/config/rule.config  | while read line
   do
-    #echo ip rule add from ` echo $line | awk '{print $1" "$2" "$3}'`
     ip rule add from ` echo $line | awk '{print $1" "$2" "$3}'`
     WANIP=`cat $WORKDIR/config/line/\`echo $line | awk '{print $3}'\`.config | grep -w \`echo $line | awk '{print $5}'\` | awk -F "=" '{print $2}'`
-    #WANIP=`echo $line | awk '{print $5}'`
     ADDIPT=`echo -A POSTROUTING -s \`echo $line | awk '{print $1}'\` -j SNAT --to-source $WANIP`
     sed -i "$((`cat /etc/sysconfig/iptables | wc -l`-1)) i $ADDIPT" /etc/sysconfig/iptables
   done

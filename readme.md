@@ -7,22 +7,26 @@ SmartPBRÎªÒ»¸ö°ïÖúÔËÎ¬ÈËÔ±¿ìËÙ×Ô¶¯»¯°²×°²ßÂÔÂ·ÓÉ·şÎñ£¬Ö÷ÒªÆóÒµÊ¹ÓÃLINUXÍø¹Ø²ßÂÔÂ
  - ĞÂÔöÂ·ÓÉÏßÂ·
  - ÇĞ»»²ßÂÔ
 
+## ÒÑ²âÊÔ±àÒë»·¾³ ##
+
+    Red Hat Enterprise Linux Server release 6.4 (Santiago)
+    
 ## °üº¬×é¼ş ##
     smartpbr-x.x.x          °²×°Ä¿Â¼        /usr/local/smartpbr        ÅäÖÃÎÄ¼ş    /etc/smartpbr
-    
+  
+
+##ÊÊÓÃÍØÆË##
+![topology.jpg](_screen/topology.jpg "")
+
+
+ 
 ## ³£ÓÃÃüÁî ##
 
     ./smartpbr install    #°²×°smartpbr
     /etc/init.d/smartpbr  #½»»¥½»»¥Ê½½Å±¾
 
-## ÒÑ²âÊÔ±àÒë»·¾³ ##
 
-    Red Hat Enterprise Linux Server release 6.4 (Santiago)
-    
-
-ÈôÌØÊâÇé¿öÏÂĞèÒªÊÖ¶¯°²×°£¬Çë°´ÕÕÒÔÏÂ¹æ·¶½øĞĞ°²×°
-
-°²×°°üÄÚÈİ£º
+##°²×°°üÄÚÈİ##
 
     smartvpn_x.x.x
     ©¦ smartpbr.sh                    #×Ô¶¯»¯½Å±¾
@@ -33,7 +37,45 @@ SmartPBRÎªÒ»¸ö°ïÖúÔËÎ¬ÈËÔ±¿ìËÙ×Ô¶¯»¯°²×°²ßÂÔÂ·ÓÉ·şÎñ£¬Ö÷ÒªÆóÒµÊ¹ÓÃLINUXÍø¹Ø²ßÂÔÂ
            route.config                #Â·ÓÉÅäÖÃÎÄ¼ş
            rule.config                 #²ßÂÔÅäÖÃÎÄ¼ş
 
+##ÅäÖÃÎÄ¼ş##
+
+**line/*.config**
+
+lt.config
+
+    DEFAULTIP=2.2.2.1
+    IP2=2.2.2.2
+    GATEWAY=2.2.2.254
+    WANDEV=eth0
+    
+dx.config
+
+    DEFAULTIP=1.1.1.1
+    GATEWAY=1.1.1.254
+    WANDEV=eth0
+    
+DEFAULTIP,IP2µÈµÈÎª±¾ÏßÂ·µÄ³öÍøIP£¬ÓÃÓÚrule.configÖĞµ÷ÓÃ£¬GATEWAY:±¾ÏßÂ·ÏÂÒ»ÌõµØÖ·£¬WANDEV±¾ÏßÂ·ËùÔÚµÄÍø¿¨
+
+**route.config**
+
+    default
+    10.0.0.0/8 via 172.31.0.9 dev tun0
+
+routeÅäÖÃÎÄ¼ş£¬Ã¿ÕÅÂ·ÓÉ±íÖĞµÄÂ·ÓÉ²ßÂÔ¾ù±£³ÖÒ»ÖÂ
+
+**rule.confg** 
+
+    192.168.8.0/24 table lt ip DEFAULTIP
+    192.168.6.0/24 table lt ip IP2
+    192.168.4.0/24 table dx ip DEFAULTIP
+   
+ruleÅäÖÃÎÄ¼ş£¬¾ö¶¨IP¶ÎÊ¹ÓÃµÄÂ·ÓÉ±íÒÔ¼°³öÍøIP£¬DEFAULTIP/IP2¶ÔÓ¦ÏàÓ¦line/*.configÖĞµÄIP¶ÔÓ¦±ğ³Æ
+
+
 ## ÊÖ¶¯²Ù×÷ ##
+
+ÈôÌØÊâÇé¿öÏÂĞèÒªÊÖ¶¯°²×°£¬Çë°´ÕÕÒÔÏÂ¹æ·¶½øĞĞ°²×°
+
 
 1¡¢Ìí¼ÓdxtÂ·ÓÉ
 
